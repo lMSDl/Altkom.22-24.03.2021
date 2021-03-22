@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using FluentAssertions;
+using Moq;
 
 namespace ClassLibrary.Test
 {
@@ -30,17 +31,18 @@ namespace ClassLibrary.Test
         {
             //Arrange
             var holder = new NumbersHolder();
+            var number = It.IsAny<int>();
 
             //Act
-            holder.Add(0);
+            holder.Add(number);
             var result = holder.Fetch();
 
             //Assert
-            Assert.Equal(new[] { 0 }, result);
+            Assert.Equal(new[] { number }, result);
             Assert.Single(result);
-            Assert.Single(result, 0);
+            Assert.Single(result, number);
 
-            result.Should().ContainSingle().And.Contain(0);
+            result.Should().ContainSingle().And.Contain(number);
         }
 
         [Fact]
