@@ -3,6 +3,7 @@ using Xunit;
 
 namespace ClassLibrary.Test
 {
+    [TestCaseOrderer("ClassLibrary.Test.Orderers.AlphabeticalOrderer", "ClassLibrary.Test")]
     public class StringConcatenatorUnitTest : IDisposable
     {
         public StringConcatenatorUnitTest()
