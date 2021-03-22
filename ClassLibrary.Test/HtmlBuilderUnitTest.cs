@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using FluentAssertions;
 
 namespace ClassLibrary.Test
 {
@@ -20,7 +21,8 @@ namespace ClassLibrary.Test
             htmlBuilder.Append("a");
             var result = htmlBuilder.ToString();
 
-            Assert.Equal("a", result);
+            //Assert.Equal("a", result);
+            result.Should().Be("a");
         }
 
         [Fact]
@@ -34,9 +36,11 @@ namespace ClassLibrary.Test
             htmlBuilder.AppendBold(input);
             var result = htmlBuilder.ToString();
 
-            Assert.StartsWith("<b>", result);
-            Assert.Contains(input, result);
-            Assert.EndsWith("</b>", result);
+            result.Should().StartWith("<b>").And.Contain(input).And.EndWith("</b>");
+
+            //Assert.StartsWith("<b>", result);
+            //Assert.Contains(input, result);
+            //Assert.EndsWith("</b>", result);
         }
 
         [Fact]
@@ -51,10 +55,13 @@ namespace ClassLibrary.Test
             htmlBuilder.AppendAnchor(href, label);
             var result = htmlBuilder.ToString();
 
-            Assert.StartsWith("<a href=", result);
+
+            result.Should().StartWith("<a href=").And.Contain(href, label).And.EndWith("</a>");
+
+            /*Assert.StartsWith("<a href=", result);
             Assert.Contains(href, result);
             Assert.Contains(label, result);
-            Assert.EndsWith("</a>", result);
+            Assert.EndsWith("</a>", result);*/
         }
 
         [Fact]
@@ -69,6 +76,9 @@ namespace ClassLibrary.Test
             Action action = () => htmlBuilder.AppendAnchor(href, label);
 
             //Assert
+            htmlBuilder.Invoking(x => x.AppendAnchor(href, label)).Should().Throw<InvalidOperationException>();
+            action.Should().Throw<InvalidOperationException>();
+
             Assert.Throws<InvalidOperationException>(action);
         }
     }

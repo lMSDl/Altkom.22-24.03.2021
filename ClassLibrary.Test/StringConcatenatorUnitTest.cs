@@ -1,5 +1,6 @@
 using System;
 using Xunit;
+using FluentAssertions;
 
 namespace ClassLibrary.Test
 {
@@ -36,6 +37,8 @@ namespace ClassLibrary.Test
             //Assert
             var argumentNullException = Assert.Throws<ArgumentNullException>(action);
             Assert.Equal("value", argumentNullException.ParamName);
+
+            action.Should().Throw<ArgumentNullException>().And.ParamName.Should().Be("value");
         }
 
         [Fact]
