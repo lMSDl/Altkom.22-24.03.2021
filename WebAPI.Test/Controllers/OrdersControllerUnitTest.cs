@@ -203,11 +203,11 @@ namespace WebAPI.Test
         {
             Mock<ILogger<OrdersController>> logger = new Mock<ILogger<OrdersController>>();
             logger.Setup(x => x.Log(
-            LogLevel.Information,
+            It.Is<LogLevel>(x => x == LogLevel.Information),
             It.IsAny<EventId>(),
-            It.IsAny<It.IsAnyType>(),
+            It.Is<It.IsAnyType>((x, y) => x.ToString().Contains(nameof(OrdersController))),
             It.IsAny<Exception>(),
-            (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()))
+            It.Is<Func<It.IsAnyType, Exception, string>>((x, y) => true)))
             .Verifiable();
             return logger;
         }

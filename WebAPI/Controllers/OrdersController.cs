@@ -35,7 +35,7 @@ namespace WebAPI.Controllers
             var result = await _service.ReadAsync(id);
             if (result == null)
             {
-                _logger.LogInformation($"{id} not found");
+                _logger.LogInformation($"{nameof(OrdersController)}:{id} not found");
                 return NotFound();
             }
 
@@ -47,7 +47,7 @@ namespace WebAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                _logger.LogInformation("bad request");
+                _logger.LogInformation($"{nameof(OrdersController)}:bad request");
                 return BadRequest(ModelState);
             }
 
@@ -67,7 +67,7 @@ namespace WebAPI.Controllers
         {
             if (await _service.ReadAsync(id) == null)
             {
-                _logger.LogInformation($"{id} not found");
+                _logger.LogInformation($"{nameof(OrdersController)}:{id} not found");
                 return NotFound();
             }
 
