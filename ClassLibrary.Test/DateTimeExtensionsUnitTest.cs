@@ -15,7 +15,7 @@ namespace ClassLibrary.Test
         [Fact]
         public void ToDateTime_ResturnsDateTime_FromUnixTime()
         {
-            var timestamp = 1616416571l;
+            var timestamp = 1616416571L;
 
             var result = timestamp.ToDateTime();
 

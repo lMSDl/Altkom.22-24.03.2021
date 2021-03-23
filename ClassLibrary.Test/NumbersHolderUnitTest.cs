@@ -33,7 +33,7 @@ namespace ClassLibrary.Test
         {
             //Arrange
             var holder = new NumbersHolder();
-            var number = default;
+            int number = default;
 
             //Act
             holder.Add(number);
