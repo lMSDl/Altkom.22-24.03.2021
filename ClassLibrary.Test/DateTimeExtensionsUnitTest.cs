@@ -21,8 +21,7 @@ namespace ClassLibrary.Test
 
             Assert.Equal(new DateTime(2021, 3, 22, 12, 36, 11, DateTimeKind.Utc), result);
 
-
-            result.Should().Be(22.March(2021).At(12, 36, 11).AsUtc()).And.BeIn(DateTimeKind.Utc);
+            result.Should().Be(22.March(2021).At(12, 36, 11).AsUtc());
             result.Should().BeCloseTo(22.March(2021).At(12, 36, 10).AsUtc(), 1000);
         }
     }

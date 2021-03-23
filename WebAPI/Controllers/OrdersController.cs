@@ -23,33 +23,56 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public Task<IActionResult> Get()
+        public async Task<IActionResult> Get()
         {
-            throw new NotImplementedException();
+            var result = await _service.ReadAsync();
+            return Ok(result);
         }
 
-        [HttpGet]
-        public Task<IActionResult> Get(int id)
+        [HttpGet(Name = "GetOrderRoute")]
+        public async Task<IActionResult> Get(int id)
         {
-            throw new NotImplementedException();
+            var result = await _service.ReadAsync(id);
+            if (result == null)
+            {
+                _logger.LogInformation($"{id} not found");
+                return NotFound();
+            }
+
+            return Ok(result);
         }
 
         [HttpPut]
-        public Task<IActionResult> Put(int id, Order entity)
+        public async Task<IActionResult> Put(int id, Order entity)
         {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogInformation("bad request");
+                return BadRequest(ModelState);
+            }
+
             throw new NotImplementedException();
         }
 
         [HttpPost]
-        public Task<IActionResult> Post(Order entity)
+        public async Task<IActionResult> Post(Order entity)
         {
-            throw new NotImplementedException();
+            var result = await _service.CreateAsync(entity);
+
+            return CreatedAtRoute("GetOrderRoute", new { id = result.Id }, result);
         }
 
         [HttpDelete]
-        public Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            throw new NotImplementedException();
+            if (await _service.ReadAsync(id) == null)
+            {
+                _logger.LogInformation($"{id} not found");
+                return NotFound();
+            }
+
+            await _service.DeleteAsync(id);
+            return NoContent();
         }
     }
 }

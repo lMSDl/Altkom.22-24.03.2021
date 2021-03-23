@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Xunit;
 using FluentAssertions;
 using Moq;
+using FluentAssertions.Execution;
 
 namespace ClassLibrary.Test
 {
@@ -19,11 +20,12 @@ namespace ClassLibrary.Test
             var numbersHolder = new NumbersHolder();
 
             //Act
+            //numbersHolder.Add(0);
             var result = numbersHolder.Fetch();
 
             //Assert
-            Assert.Empty(result);
-            result.Should().BeEmpty();
+            //Assert.Empty(result);
+            result.Should().BeEmpty("because we do not put anything there");
         }
 
         [Fact]
@@ -31,18 +33,23 @@ namespace ClassLibrary.Test
         {
             //Arrange
             var holder = new NumbersHolder();
-            var number = It.IsAny<int>();
+            var number = default;
 
             //Act
             holder.Add(number);
+            //holder.Add(3);
             var result = holder.Fetch();
 
             //Assert
-            Assert.Equal(new[] { number }, result);
-            Assert.Single(result);
-            Assert.Single(result, number);
-
-            result.Should().ContainSingle().And.Contain(number);
+               // Assert.Equal(new[] { number }, result);
+               // Assert.Single(result);
+               // Assert.Single(result, number);
+        
+            using (new AssertionScope())
+            {
+                //5.Should().Be(-5);
+                result.Should().ContainSingle().And.Contain(number);
+            }
         }
 
         [Fact]
@@ -75,7 +82,7 @@ namespace ClassLibrary.Test
             //Assert.ThrowsAsync<InvalidOperationException>(func);
             Assert.ThrowsAsync<InvalidOperationException>(Act);
 
-            func.Should().ThrowAsync<InvalidOperationException>();
+            func.Should().ThrowAsync<InvalidOperationException>().WithMessage("message");
         }
     }
 }
