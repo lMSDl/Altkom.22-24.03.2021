@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace Models
@@ -7,6 +8,6 @@ namespace Models
     {
         public User User { get; set; }
 
-        public IEquatable<Product> Products { get; set; }
+        public IEnumerable<Product> Products { get; set; }
     }
 }

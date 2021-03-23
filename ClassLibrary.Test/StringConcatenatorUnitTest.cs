@@ -1,6 +1,8 @@
 using System;
 using Xunit;
 using FluentAssertions;
+using Bogus;
+using System.Linq;
 
 namespace ClassLibrary.Test
 {
@@ -46,13 +48,15 @@ namespace ClassLibrary.Test
         {
             //Arrage
             //var stringConcatenator = new StringConcatenator();
+            var value = string.Concat(new Faker().Random.Chars(count: 1));
+
 
             //Act
-            _stringConcatenator.Concat("0");
+            _stringConcatenator.Concat(value);
             var result = _stringConcatenator.ToString();
 
             //Assert
-            Assert.Equal("0", result);
+            Assert.Equal(value, result);
         }
 
         [Fact]

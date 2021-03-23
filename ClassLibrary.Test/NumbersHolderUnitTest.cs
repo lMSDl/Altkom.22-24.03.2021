@@ -7,6 +7,7 @@ using Xunit;
 using FluentAssertions;
 using Moq;
 using FluentAssertions.Execution;
+using Bogus;
 
 namespace ClassLibrary.Test
 {
@@ -56,16 +57,17 @@ namespace ClassLibrary.Test
         public async Task RemoveAsync_RemoveSingleNumber_CountZero()
         {
             //Arrange
+            var value = new Faker().Random.Number();
             var holder = new NumbersHolder();
-            holder.Add(0);
+            holder.Add(value);
 
             //Act
             await holder.RemoveAsync();
             var result = holder.Count;
 
             //Assert
-            Assert.Equal(0, result);
-            result.Should().Be(0);
+            Assert.Equal(value, result);
+            result.Should().Be(value);
         }
 
         [Fact]

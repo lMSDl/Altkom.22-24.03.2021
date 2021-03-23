@@ -1,3 +1,4 @@
+using Bogus;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -173,11 +174,23 @@ namespace WebAPI.Test
         public async Task Post_ResturnsOrder_WhenOrderCreated()
         {
             //Arrage
-            Mock<Order> order = new Mock<Order>();
-            order.SetupAllProperties();
+            /*Mock<Order> order = new Mock<Order>();
+            order.SetupAllProperties();*/
+            var user = new Faker<User>()
+                .RuleFor(x => x.Id, x => x.IndexFaker)
+                .Generate();
+            var products = new Faker<Product>()
+                .RuleFor(x => x.Id, x => x.IndexFaker)
+                .Generate(10);
+
+            var order = new Faker<Order>("pl")
+                .RuleFor(x => x.Id, x => x.IndexFaker)
+                .RuleFor(x => x.User, x => user)
+                .RuleFor(x => x.Products, x => x.PickRandom(products, 5))
+                .Generate();
 
             Mock<ICrudService<Order>> service = new Mock<ICrudService<Order>>();
-            service.Setup(x => x.CreateAsync(It.IsAny<Order>())).ReturnsAsync(order.Object);
+            service.Setup(x => x.CreateAsync(It.IsAny<Order>())).ReturnsAsync(order);
             OrdersController controller = new OrdersController(service.Object, null);
 
             //Act
@@ -185,7 +198,7 @@ namespace WebAPI.Test
 
             //Assert
             CreatedAtRouteResult createdAtRouteResult = Assert.IsType<CreatedAtRouteResult>(result);
-            Assert.Equal(order.Object, createdAtRouteResult.Value);
+            Assert.Equal(order, createdAtRouteResult.Value);
             Assert.Equal("GetOrderRoute", createdAtRouteResult.RouteName);
         }
 
