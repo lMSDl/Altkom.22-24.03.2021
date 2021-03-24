@@ -13,7 +13,7 @@ namespace ClassLibrary.BankTransfer
 
         void AddTransaction(Transaction transaction);
         IEnumerable<Transaction> GetTransactions();
-        IEnumerable<Transaction> FilterTransactions(TransactionType type, IAccount account);
+        IEnumerable<Transaction> FilterTransactions(TransactionType type, IAccount account /*int accountNumber*/);
 
         void Transfer(IAccount toAccount, double amount, ITransactionProvider provider);
     }
